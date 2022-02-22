@@ -18,7 +18,18 @@ const server = http.createServer(async (req, res) => {
 
   //bicycle page
   if (pathname === "/") {
-    const html = await fs.readFile("./views/bicycles.html", "utf-8");
+    let html = await fs.readFile("./views/bicycles.html", "utf-8");
+    const eachBicycle = await fs.readFile(
+      "./views/partials/bicycle.html",
+      "utf-8"
+    );
+
+    let allBicycles = "";
+    for (let index = 0; index < 6; index++) {
+      allBicycles += eachBicycle;
+    }
+    html = html.replace(/<%ALLBICYCLES%>/g, allBicycles);
+
     res.writeHead(200, { "Content-Type": "text/html" });
     res.end(html);
   }
